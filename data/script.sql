@@ -8,7 +8,9 @@ CREATE TABLE kb_input(
     kb_size varchar(30) NOT NULL,
     kb_connection varchar(20) NOT NULL,
     mk_before BOOLEAN NOT NULL, 
-    mk_input varchar(300) NOT NULL
+    mk_input varchar(300) NOT NULL,
+    user_prompt varchar (500) NOT NULL,
+    created_at DATETIME 
 );
 
 CREATE TABLE kb_output (
@@ -19,6 +21,7 @@ CREATE TABLE kb_output (
   switch varchar (50) not null,
   kb_size varchar (50) not null,
   mk_output varchar(300) NOT NULL,
+  sys_prompt DATETIME 
   FOREIGN KEY (id_kb_input) REFERENCES kb_input(id_kb_input)
 );
 
