@@ -1,11 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
+    <title>KeyFinder - Encuentra tu teclado mecánico ideal</title>
+    <style>
+        /* General */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #fff;
+        }
+
+        /* Imagen de la izquierda */
+        .image-container {
+            flex: 1;
+            background-image: url('../data/teclado.webp'); /* Cambia esto con la URL de tu imagen */
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px 0 0 12px; /* Bordes redondeados para la imagen */
+        }
+
+        /* Contenedor de contenido */
+        .content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+            background-color: #1e1e1e; /* Fondo oscuro */
+            border-radius: 0 12px 12px 0; /* Bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombras */
+        }
+
+        /* Título */
+        .content-container h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ff007f; /* Título en color vibrante */
+        }
+
+        /* Botón */
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: #ff007f;
+            border: none;
+            border-radius: 30px; /* Botón redondeado */
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn:hover {
+            background-color: #e6006e;
+            transform: scale(1.05); /* Efecto de hover con escala */
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #2c3e50;
+            color: #fff;
+            border-radius: 12px; /* Bordes redondeados */
+            width: 100%;
+            font-size: 0.9rem;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3); /* Sombras sutiles */
+        }
+    </style>
 </head>
 <body>
-    <p>HOLA!!!</p>
+    <a href="/">
+        <img src="../data/teclado.png" alt="Logo KeyFinder" style="position: absolute; top: 10px; left: 10px; width: 100px; height: auto;">
+    </a>
+    <!-- Contenedor de la imagen -->
+    <div class="image-container"></div>
+
+    <!-- Contenedor del contenido -->
+    <div class="content-container">
+        <h1>KeyFinder</h1>
+        <a href="/cuestionario" class="btn">Ir al cuestionario</a>
+        <footer>
+            <p>Encuentra el teclado mecánico perfecto para ti con el poder de la inteligencia artificial.</p>
+        </footer>
+    </div>
 </body>
 </html>

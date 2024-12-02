@@ -1,11 +1,219 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KeyFinder - Cuestionario</title>
+    <title>Cuestionario - KeyFinder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            color: #fff;
+        }
+        .container h1 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
+            gap: 1.5rem; /* Espacio entre las celdas */
+            align-items: center;
+        }
+        label {
+            font-weight: bold;
+            color: #ddd;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        input, select, textarea, button {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        input, select, textarea {
+            background-color: #333;
+            color: #fff;
+        }
+        textarea {
+            resize: none;
+        }
+        button {
+            background-color: #ff007f;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            grid-column: 1 / -1; /* El botón ocupa toda la fila */
+            padding: 1rem;
+        }
+        button:hover {
+            background-color: #e6006e;
+            transform: scale(1.05);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .full-width {
+            grid-column: 1 / -1; /* Elemento ocupa las dos columnas */
+        }
+
+        /* Estilo de botones radio */
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .radio-group input[type="radio"] {
+            display: none;
+        }
+        .radio-group label {
+            flex: 1;
+            text-align: center;
+            background-color: #333;
+            padding: 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid #444;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .radio-group input:checked + label {
+            background-color: #ff007f;
+            color: #fff;
+            border-color: #ff007f;
+            transform: scale(1.05);
+        }
+        .radio-group label:hover {
+            background-color: #444;
+        }
+
+        /* Select personalizado */
+        select {
+            appearance: none;
+            background-color: #2c2c2c;
+            color: #fff;
+            border: 1px solid #444;
+            padding-right: 2rem;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+        }
+        select:hover {
+            border-color: #ff007f;
+        }
+    </style>
+    <script>
+        function toggleTextarea() {
+            const hasUsedBefore = document.getElementById('used_before_yes').checked;
+            const textarea = document.getElementById('favorite_feature');
+            textarea.disabled = !hasUsedBefore;
+        }
+
+        // Función para redirigir y enviar datos
+        function submitForm(event) {
+            // Evitar el comportamiento predeterminado del formulario
+            event.preventDefault(); 
+            
+            // Aquí puedes realizar alguna validación si lo deseas
+
+            // Enviar el formulario de manera predeterminada (GET)
+            event.target.submit(); // Esto envía el formulario al servidor y lo dirige a la acción definida
+
+            // Redirigir al endpoint "teclados" después del envío
+            window.location.href = '/teclados'; // Aquí redirigimos al endpoint
+        }
+    </script>
 </head>
 <body>
-    
+    <a href="/">
+        <img src="../data/teclado.png" alt="Logo KeyFinder" style="position: absolute; top: 10px; left: 10px; width: 100px; height: auto;">
+    </a>
+    <div class="container">
+        <h1>Cuestionario</h1>
+        <form action="/teclados" method="GET" onsubmit="submitForm(event)">
+            <!-- 1. Uso del teclado -->
+            <div>
+                <label for="usage">¿Para qué usarás el teclado?</label>
+                <select id="usage" name="usage" required>
+                    <option value="gaming">Gaming</option>
+                    <option value="writing">Escritura</option>
+                    <option value="programming">Programación</option>
+                </select>
+            </div>
+
+            <!-- 2. Presupuesto -->
+            <div>
+                <label for="budget">Presupuesto (en $)</label>
+                <input type="number" id="budget" name="budget" min="1" required placeholder="Ejemplo: 40">
+            </div>
+
+            <!-- 3. Switch -->
+            <div>
+                <label for="switch">Tipo de switch</label>
+                <select id="switch" name="switch" required>
+                    <option value="lineal">Lineal</option>
+                    <option value="tactil">Táctil</option>
+                    <option value="clicky">Clicky</option>
+                    <option value="none">Sin preferencia</option>
+                </select>
+            </div>
+
+            <!-- 4. Tamaño -->
+            <div>
+                <label for="size">Tamaño del teclado</label>
+                <select id="size" name="size" required>
+                    <option value="fullsize">Fullsize</option>
+                    <option value="tkl">TKL</option>
+                    <option value="60">60%</option>
+                </select>
+            </div>
+
+            <!-- 5. Conexión -->
+            <div>
+                <label for="connection">Conexión</label>
+                <select id="connection" name="connection" required>
+                    <option value="wired">Cable</option>
+                    <option value="wireless">Inalámbrico</option>
+                </select>
+            </div>
+
+            <!-- 6. ¿Has usado un teclado mecánico antes? -->
+            <div class="full-width">
+                <label>¿Has usado un teclado mecánico antes?</label>
+                <div class="radio-group">
+                    <input type="radio" id="used_before_yes" name="used_before" value="yes" onclick="toggleTextarea()" required>
+                    <label for="used_before_yes">Sí</label>
+
+                    <input type="radio" id="used_before_no" name="used_before" value="no" onclick="toggleTextarea()">
+                    <label for="used_before_no">No</label>
+                </div>
+            </div>
+
+            <!-- 7. ¿Qué es lo que más te gusta de un teclado mecánico? -->
+            <div class="full-width">
+                <label for="favorite_feature">¿Qué es lo que más te gusta de un teclado mecánico?</label>
+                <textarea id="favorite_feature" name="favorite_feature" disabled placeholder="Escribe aquí tu respuesta..."></textarea>
+            </div>
+            <!-- Botón de buscar -->
+            <button type="submit">Buscar teclados</button>
+        </form>
+    </div>
 </body>
 </html>

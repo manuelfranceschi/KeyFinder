@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados - KeyFinder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            color: #fff;
+        }
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 2rem auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .keyboard-card {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            max-width: 500px;  /* Aumentamos el tamaño */
+            width: 100%;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .keyboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+        .keyboard-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .keyboard-card h3 {
+            font-size: 1.8rem;  /* Aumentamos el tamaño del título */
+            margin-bottom: 0.5rem;
+            color: #ff007f;
+        }
+        .keyboard-card p {
+            margin: 0.5rem 0;
+            font-size: 1.1rem;  /* Aumentamos el tamaño de los párrafos */
+        }
+        .price {
+            font-weight: bold;
+            font-size: 1.4rem;  /* Aumentamos el tamaño del precio */
+            margin: 1rem 0;
+        }
+        .amazon-link {
+            display: inline-block;
+            padding: 1rem 2rem;  /* Hicimos el botón más grande */
+            background-color: #ff007f;
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+        .amazon-link:hover {
+            background-color: #e6006e;
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <a href="/">
+        <img src="../data/teclado.png" alt="Logo KeyFinder" style="position: absolute; top: 10px; left: 10px; width: 100px; height: auto;">
+    </a>
+    <div class="container" id="results-container">
+        <!-- Primer div (izquierda) -->
+        <div class="keyboard-card">
+            <img src="../data/tio-teclado.jpeg" alt="Teclado Mecánico">
+            <h3 class="keyboard-name">Teclado Mecánico 1</h3>
+            <p class="keyboard-switch">Switch: <span id="switch-type">Táctil</span></p>
+            <p class="keyboard-size">Tamaño: <span id="size">TKL</span></p>
+            <p class="keyboard-opinion">Opinión del modelo: <span id="model-output">Ideal para trabajos de oficina, cómodo y eficiente.</span></p>
+            <p class="price">Precio: $<span id="price">79.99</span></p>
+            <a href="https://amazon.com/teclado1" target="_blank" class="amazon-link">Comprar en Amazon</a>
+        </div>
+
+        <!-- Segundo div (derecha) -->
+        <div class="keyboard-card">
+            <img src="../data/tio-teclado.jpeg" alt="Teclado Mecánico">
+            <h3 class="keyboard-name">Teclado Mecánico 2</h3>
+            <p class="keyboard-switch">Switch: <span id="switch-type">Lineal</span></p>
+            <p class="keyboard-size">Tamaño: <span id="size">Fullsize</span></p>
+            <p class="keyboard-opinion">Opinión del modelo: <span id="model-output">Perfecto para gamers que buscan velocidad y precisión.</span></p>
+            <p class="price">Precio: $<span id="price">120.50</span></p>
+            <a href="https://amazon.com/teclado2" target="_blank" class="amazon-link">Comprar en Amazon</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>Encuentra el teclado perfecto para ti con KeyFinder</p>
+    </footer>
+</body>
+</html>

@@ -99,7 +99,7 @@ def prompts_variables(which_one:str):
     elif which_one == 'reload_keyboards':
         output = '''
         El usuario, después de que le mostraste dos teclados, quiere ver otras opciones. 
-        Muestra otros dos teclados más que cumplan explicitamente con las características proporcionadas por el usuario. Asegúrate de que sean diferentes de los teclados recomendados anteriormente. Proporciona la información en el mismo formato que antes y asegúrate de completar todos los campos:
+        Muestra otros dos teclados más que cumplan explicitamente con las características proporcionadas por el usuario ({input}). Asegúrate de que sean diferentes de los teclados recomendados anteriormente. Proporciona la información en el mismo formato que antes y asegúrate de completar todos los campos:
 
         ### 1. **[Nombre del teclado]**
         - **Precio:** [Precio en euros]
