@@ -96,4 +96,18 @@ def prompts_variables(which_one:str):
             
             Recuerda: responde en un solo bloque de texto y asegúrate de completar todos los campos para los tres teclados sin omitir ningún detalle.
             """
+    elif which_one == 'reload_keyboards':
+        output = '''
+        El usuario, después de que le mostraste dos teclados, quiere ver otras opciones. 
+        Muestra otros dos teclados más que cumplan explicitamente con las características proporcionadas por el usuario. Asegúrate de que sean diferentes de los teclados recomendados anteriormente. Proporciona la información en el mismo formato que antes y asegúrate de completar todos los campos:
+
+        ### 1. **[Nombre del teclado]**
+        - **Precio:** [Precio en euros]
+        - **Modelo de switches:** [Modelo exacto de los switches, por ejemplo, Cherry MX Brown o Gateron Red]
+        - **Formato del teclado y número de teclas:** [Formato, por ejemplo, 60%, 65%, TKL o completo, seguido del número exacto de teclas]
+        - **Justificación:** [Una breve opinión de por qué este teclado es una buena opción considerando las preferencias del usuario, pero sin repetir ninguna de las recomendaciones anteriores.]
+        - **Enlace para comprar:** [Texto visible del enlace](URL exacta del enlace)
+
+        Recuerda: no muestres teclados que ya hayas recomendado y asegúrate de que todas las opciones sean nuevas y relevantes para las necesidades del usuario. Responde en un solo bloque de texto, con todos los campos completos para los dos teclados adicionales.
+        '''
     return output
