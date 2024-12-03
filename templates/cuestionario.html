@@ -31,8 +31,8 @@
         }
         form {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
-            gap: 1.5rem; /* Espacio entre las celdas */
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
             align-items: center;
         }
         label {
@@ -62,7 +62,7 @@
             font-weight: bold;
             cursor: pointer;
             margin-top: 1rem;
-            grid-column: 1 / -1; /* El botón ocupa toda la fila */
+            grid-column: 1 / -1;
             padding: 1rem;
         }
         button:hover {
@@ -71,10 +71,8 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
         .full-width {
-            grid-column: 1 / -1; /* Elemento ocupa las dos columnas */
+            grid-column: 1 / -1;
         }
-
-        /* Estilo de botones radio */
         .radio-group {
             display: flex;
             gap: 1rem;
@@ -102,44 +100,58 @@
         .radio-group label:hover {
             background-color: #444;
         }
-
-        /* Select personalizado */
-        select {
-            appearance: none;
-            background-color: #2c2c2c;
-            color: #fff;
-            border: 1px solid #444;
-            padding-right: 2rem;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1rem;
-        }
-        select:hover {
-            border-color: #ff007f;
-        }
     </style>
     <script>
+        async function submitForm(event) {
+            // Evitar comportamiento predeterminado del formulario
+            event.preventDefault();
+    
+            // Recopilar datos del formulario
+            const formData = new FormData(event.target);
+    
+            // Crear un objeto con los datos
+            const jsonData = {
+                kb_usage: formData.get('kb_usage'),
+                budget: parseInt(formData.get('budget'), 10), // Asegurarse de que sea un número
+                switch: formData.get('switch'),
+                kb_size: formData.get('kb_size'),
+                kb_connection: formData.get('connection'),
+                mk_before: formData.get('mk_before') === '1', // Convertir a boolean
+                mk_input: formData.get('favorite_feature') || '' // Manejar valor vacío
+            };
+    
+            // Enviar datos como JSON al endpoint
+            try {
+                const response = await fetch('/keyfinder/send_user_data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(jsonData),
+                });
+    
+                if (response.ok) {
+                    // Redirigir a /teclados si la solicitud fue exitosa
+                    window.location.href = '/teclados';
+                } else {
+                    // Manejar error del servidor
+                    const errorData = await response.json();
+                    console.error('Error del servidor:', errorData);
+                    alert('Ocurrió un error al enviar los datos. Verifica e intenta nuevamente.');
+                }
+            } catch (error) {
+                console.error('Error de red:', error);
+                alert('Error de conexión. Por favor, verifica tu conexión a Internet.');
+            }
+        }
+    
         function toggleTextarea() {
             const hasUsedBefore = document.getElementById('used_before_yes').checked;
             const textarea = document.getElementById('favorite_feature');
             textarea.disabled = !hasUsedBefore;
         }
-
-        // Función para redirigir y enviar datos
-        function submitForm(event) {
-            // Evitar el comportamiento predeterminado del formulario
-            event.preventDefault(); 
-            
-            // Aquí puedes realizar alguna validación si lo deseas
-
-            // Enviar el formulario de manera predeterminada (GET)
-            event.target.submit(); // Esto envía el formulario al servidor y lo dirige a la acción definida
-
-            // Redirigir al endpoint "teclados" después del envío
-            window.location.href = '/teclados'; // Aquí redirigimos al endpoint
-        }
     </script>
+    
 </head>
 <body>
     <a href="/">
@@ -147,71 +159,65 @@
     </a>
     <div class="container">
         <h1>Cuestionario</h1>
-        <form action="/teclados" method="GET" onsubmit="submitForm(event)">
-            <!-- 1. Uso del teclado -->
+        <!-- Configuración del formulario -->
+        <form onsubmit="submitForm(event)">
             <div>
-                <label for="usage">¿Para qué usarás el teclado?</label>
-                <select id="usage" name="usage" required>
+                <label for="kb_usage">¿Para qué usarás el teclado?</label>
+                <select id="kb_usage" name="kb_usage" required>
                     <option value="gaming">Gaming</option>
-                    <option value="writing">Escritura</option>
-                    <option value="programming">Programación</option>
+                    <option value="escritura">Escritura</option>
+                    <option value="programacion">Programación</option>
                 </select>
             </div>
 
-            <!-- 2. Presupuesto -->
             <div>
                 <label for="budget">Presupuesto (en $)</label>
                 <input type="number" id="budget" name="budget" min="1" required placeholder="Ejemplo: 40">
             </div>
 
-            <!-- 3. Switch -->
             <div>
                 <label for="switch">Tipo de switch</label>
                 <select id="switch" name="switch" required>
                     <option value="lineal">Lineal</option>
                     <option value="tactil">Táctil</option>
                     <option value="clicky">Clicky</option>
-                    <option value="none">Sin preferencia</option>
+                    <option value="cualquiera">Sin preferencia</option>
                 </select>
             </div>
 
-            <!-- 4. Tamaño -->
             <div>
-                <label for="size">Tamaño del teclado</label>
-                <select id="size" name="size" required>
+                <label for="kb_size">Tamaño del teclado</label>
+                <select id="kb_size" name="kb_size" required>
                     <option value="fullsize">Fullsize</option>
                     <option value="tkl">TKL</option>
                     <option value="60">60%</option>
                 </select>
             </div>
 
-            <!-- 5. Conexión -->
             <div>
                 <label for="connection">Conexión</label>
                 <select id="connection" name="connection" required>
-                    <option value="wired">Cable</option>
-                    <option value="wireless">Inalámbrico</option>
+                    <option value="con cable">Cable</option>
+                    <option value="inalambrico">Inalámbrico</option>
                 </select>
             </div>
 
-            <!-- 6. ¿Has usado un teclado mecánico antes? -->
             <div class="full-width">
                 <label>¿Has usado un teclado mecánico antes?</label>
                 <div class="radio-group">
-                    <input type="radio" id="used_before_yes" name="used_before" value="yes" onclick="toggleTextarea()" required>
+                    <input type="radio" id="used_before_yes" name="mk_before" value="1" onclick="toggleTextarea()" required>
                     <label for="used_before_yes">Sí</label>
 
-                    <input type="radio" id="used_before_no" name="used_before" value="no" onclick="toggleTextarea()">
+                    <input type="radio" id="used_before_no" name="mk_before" value="0" onclick="toggleTextarea()">
                     <label for="used_before_no">No</label>
                 </div>
             </div>
 
-            <!-- 7. ¿Qué es lo que más te gusta de un teclado mecánico? -->
             <div class="full-width">
                 <label for="favorite_feature">¿Qué es lo que más te gusta de un teclado mecánico?</label>
                 <textarea id="favorite_feature" name="favorite_feature" disabled placeholder="Escribe aquí tu respuesta..."></textarea>
             </div>
-            <!-- Botón de buscar -->
+
             <button type="submit">Buscar teclados</button>
         </form>
     </div>

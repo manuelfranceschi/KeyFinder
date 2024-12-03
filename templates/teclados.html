@@ -17,6 +17,20 @@
             flex-direction: column;
             color: #fff;
         }
+        .spinner {
+            display: none;
+            border: 6px solid #ccc;
+            border-top: 6px solid #ff007f;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
         .container {
             max-width: 1200px;
             width: 90%;
@@ -31,7 +45,7 @@
             border-radius: 12px;
             padding: 2rem;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            max-width: 500px;  /* Aumentamos el tamaño */
+            max-width: 500px;
             width: 100%;
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -47,35 +61,31 @@
             margin-bottom: 1rem;
         }
         .keyboard-card h3 {
-            font-size: 1.8rem;  /* Aumentamos el tamaño del título */
+            font-size: 1.8rem;
             margin-bottom: 0.5rem;
             color: #ff007f;
-        }
-        .keyboard-card p {
-            margin: 0.5rem 0;
-            font-size: 1.1rem;  /* Aumentamos el tamaño de los párrafos */
-        }
-        .price {
-            font-weight: bold;
-            font-size: 1.4rem;  /* Aumentamos el tamaño del precio */
-            margin: 1rem 0;
-        }
-        .amazon-link {
-            display: inline-block;
-            padding: 1rem 2rem;  /* Hicimos el botón más grande */
-            background-color: #ff007f;
-            color: #fff;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 6px;
-            transition: background-color 0.3s ease;
-        }
-        .amazon-link:hover {
-            background-color: #e6006e;
         }
         footer {
             text-align: center;
             margin-top: 2rem;
+        }
+        .button-container {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .create-button {
+            padding: 10px 20px;
+            background-color: #ff007f;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .create-button:hover {
+            background-color: #ff3385;
         }
     </style>
 </head>
@@ -83,32 +93,70 @@
     <a href="/">
         <img src="../data/teclado.png" alt="Logo KeyFinder" style="position: absolute; top: 10px; left: 10px; width: 100px; height: auto;">
     </a>
+    <div class="spinner" id="spinner"></div>
     <div class="container" id="results-container">
-        <!-- Primer div (izquierda) -->
-        <div class="keyboard-card">
-            <img src="../data/tio-teclado.jpeg" alt="Teclado Mecánico">
-            <h3 class="keyboard-name">Teclado Mecánico 1</h3>
-            <p class="keyboard-switch">Switch: <span id="switch-type">Táctil</span></p>
-            <p class="keyboard-size">Tamaño: <span id="size">TKL</span></p>
-            <p class="keyboard-opinion">Opinión del modelo: <span id="model-output">Ideal para trabajos de oficina, cómodo y eficiente.</span></p>
-            <p class="price">Precio: $<span id="price">79.99</span></p>
-            <a href="https://amazon.com/teclado1" target="_blank" class="amazon-link">Comprar en Amazon</a>
-        </div>
-
-        <!-- Segundo div (derecha) -->
-        <div class="keyboard-card">
-            <img src="../data/tio-teclado.jpeg" alt="Teclado Mecánico">
-            <h3 class="keyboard-name">Teclado Mecánico 2</h3>
-            <p class="keyboard-switch">Switch: <span id="switch-type">Lineal</span></p>
-            <p class="keyboard-size">Tamaño: <span id="size">Fullsize</span></p>
-            <p class="keyboard-opinion">Opinión del modelo: <span id="model-output">Perfecto para gamers que buscan velocidad y precisión.</span></p>
-            <p class="price">Precio: $<span id="price">120.50</span></p>
-            <a href="https://amazon.com/teclado2" target="_blank" class="amazon-link">Comprar en Amazon</a>
-        </div>
+        <!-- Los resultados se renderizarán dinámicamente aquí -->
     </div>
-
     <footer>
         <p>Encuentra el teclado perfecto para ti con KeyFinder</p>
     </footer>
+
+    <!-- Botón para crear nuevos teclados -->
+    <div class="button-container">
+        <a href="/cuestionario" class="create-button">¿Quieres crear nuevos teclados?</a>
+    </div>
+
+    <script>
+        async function fetchKeyboards() {
+            const spinner = document.getElementById('spinner');
+            const container = document.getElementById('results-container');
+
+            // Mostrar spinner mientras carga
+            spinner.style.display = 'block';
+            
+            try {
+                const llmResponse = await fetch('/keyfinder/send_data_to_llm', {
+                        method: 'POST',
+                    });
+
+                // Enviar la solicitud al endpoint correcto que trae los teclados desde la base de datos
+                const response = await fetch('/keyfinder/show_keyboards');
+
+                if (!response.ok) {
+                    throw new Error(`Error en la solicitud: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const keyboards = data.message; // Aquí espero que "message" contenga la lista de teclados
+
+                // Verificar si se recibieron teclados
+                if (keyboards && Array.isArray(keyboards)) {
+                    // Renderizar resultados en el contenedor
+                    container.innerHTML = keyboards.map(kb => `
+                        <div class="keyboard-card">
+                            <img src="../data/tio-teclado.jpeg" alt="${kb.kb_name}">
+                            <h3>${kb.kb_name}</h3>
+                            <p>Switch: ${kb.switch}</p>
+                            <p>Tamaño: ${kb.kb_size}</p>
+                            <p>Opinión del modelo: ${kb.mk_output}</p>
+                            <p class="price">Precio: $${kb.price}</p>
+                            <a href="${kb.kb_link}" target="_blank" class="amazon-link">Comprar en Amazon</a>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `<p>No se encontraron teclados.</p>`;
+                }
+
+            } catch (error) {
+                container.innerHTML = `<p>Error al cargar los teclados: ${error.message}</p>`;
+            } finally {
+                // Ocultar spinner después de cargar
+                spinner.style.display = 'none';
+            }
+        }
+
+        // Ejecutar la función al cargar la página
+        fetchKeyboards();
+    </script>
 </body>
 </html>

@@ -27,7 +27,7 @@ def open_database():
 def load_llm(prompt):
     llm = HuggingFaceEndpoint(endpoint_url='https://api-inference.huggingface.co/models/Qwen/Qwen2.5-72B-Instruct',
                           huggingfacehub_api_token=os.getenv('API_KEY_MODEL'),
-                          temperature=0.3, max_lenght=2000)
+                          temperature=0.4, max_lenght=2000)
     prompt_template = ChatPromptTemplate.from_messages(
     [
         (
